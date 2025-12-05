@@ -64,8 +64,17 @@ export class ChapterPipeline {
         chapter.chapterListHeader = chapterData.CHAPTER_LIST_HEADER;
         chapter.chapterHeader = chapterData.CHAPTER_HEADER;
         chapter.summary = chapterData.SUMMARY;
-        chapter.notes = chapterData.NOTES.split("|;|");
-        chapter.endNotes = chapterData.END_NOTES.split("|;|");
+
+        //Notes
+        const notesRaw = chapterData.NOTES as string | null;
+        const endNotesRaw = chapterData.END_NOTES as string | null;
+        chapter.notes = notesRaw
+          ? notesRaw.split("|;|").filter(n => n && n.trim().length > 0)
+          : [];
+        chapter.endNotes = endNotesRaw
+          ? endNotesRaw.split("|;|").filter(n => n && n.trim().length > 0)
+          : [];
+
         chapter.body = chapterData.BODY;
         chapter.lastFetchDate = chapterData.LAST_FETCHED_DATE != null? new Date(chapterData.LAST_FETCHED_DATE) : new Date(0);
         chapter.parserVersion = chapterData.PARSER_VERSION;
@@ -125,8 +134,17 @@ export class ChapterPipeline {
         chapter.chapterListHeader = chapterData.CHAPTER_LIST_HEADER;
         chapter.chapterHeader = chapterData.CHAPTER_HEADER;
         chapter.summary = chapterData.SUMMARY;
-        chapter.notes = chapterData.NOTES.split("|;|");
-        chapter.endNotes = chapterData.END_NOTES.split("|;|");
+
+        //Notes
+        const notesRaw = chapterData.NOTES as string | null;
+        const endNotesRaw = chapterData.END_NOTES as string | null;
+        chapter.notes = notesRaw
+          ? notesRaw.split("|;|").filter(n => n && n.trim().length > 0)
+          : [];
+        chapter.endNotes = endNotesRaw
+          ? endNotesRaw.split("|;|").filter(n => n && n.trim().length > 0)
+          : [];
+
         chapter.body = chapterData.BODY;
         chapter.lastFetchDate = chapterData.LAST_FETCHED_DATE != null? new Date(chapterData.LAST_FETCHED_DATE) : new Date(0);
         chapter.parserVersion = chapterData.PARSER_VERSION;

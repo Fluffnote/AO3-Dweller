@@ -16,7 +16,7 @@
   <div id="InnerContent" class="w-100">
     @if (chapter != null && history != null) {
       <h3 class="mx-3 mt-3">{{ chapter!.chapterHeader }}</h3>
-      @if (chapter!.notes.length > 0) {
+      @if (chapter!.summary != null && chapter!.summary != "") {
         <h5 class="mx-3 mt-4">Summary:</h5>
         <div class="mx-3 mt-3"><ui-drop-down-html [HTML]="chapter!.summary"></ui-drop-down-html></div>
         <hr class="mx-3 my-0">
@@ -28,7 +28,7 @@
         }
         <hr class="mx-3 mt-3">
       }
-      <div class="mx-3 mt-5 mb-5 body" [innerHTML]="chapter!.body" (UIElemLoad)="bodyLoad()"></div>
+      <div class="mx-3 mt-1 mb-5 body" [innerHTML]="chapter!.body" (UIElemLoad)="bodyLoad()"></div>
       @if (chapter!.endNotes.length > 0) {
         <hr class="mx-3 mt-5">
         <h5 class="mx-3 mt-3">Notes:</h5>
