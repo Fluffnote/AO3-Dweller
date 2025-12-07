@@ -23,3 +23,17 @@
 .tag:first-child {
   margin-left: 0;
 }
+
+.title-container {
+  flex: 1;
+  min-width: 0;
+
+  max-height: 3rem; /* Limits displayed text to 2 lines tall. Assumes text is 1.5 tall */
+  overflow-y: auto; /* scroll down if taller than max-height */
+}
+
+.title-text {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.5;
+}

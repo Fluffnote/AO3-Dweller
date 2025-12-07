@@ -44,16 +44,22 @@ export class ChapterParser extends ParserBase implements Parser {
       chapter.summary = (summary.children[summary.children.length -1] as HTMLDivElement).innerHTML.trim();
     })
     // Set Notes
+    chapter.notes = [];
+    chapter.endNotes = [];
     this.ifClassExists(dom.body, "notes module", (list) => {
-      chapter.notes = [];
-      chapter.endNotes = [];
       for (let i = 0; i < list.length; i++) {
         const notes = list[i] as HTMLDivElement;
-        if (notes.classList.contains("end")) { // End Notes
-          chapter.endNotes.push((notes.children[notes.children.length - 1] as HTMLElement).getHTML().trim())
-        }
-        else { // Start Notes
-          chapter.notes.push((notes.children[notes.children.length - 1] as HTMLElement).getHTML().trim())
+        const contentEl = notes.querySelector<HTMLElement>(".userstuff")
+          ?? notes; // fallback if userstuff doesn't exist
+
+        const html = contentEl.getHTML().trim(); // Trim similar as before
+
+        if (notes.classList.contains("end")) {
+          // End notes
+          chapter.endNotes.push(html);
+        } else {
+          // Start notes
+          chapter.notes.push(html);
         }
       }
     })

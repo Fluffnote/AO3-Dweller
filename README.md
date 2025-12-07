@@ -28,3 +28,10 @@ For more information on using the Angular CLI, including detailed command refere
 For more info on everything Angular here is the [full docs](https://angular.dev/overview). Version used is 20.3.0
 
 Other frameworks/libraries being used: [Capacitor](https://capacitorjs.com/docs/) (v7), [Ionic](https://ionicframework.com/docs/) (v8), [Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/) (5.3)
+
+## To Build the APK
+
+Run:
+```bash
+npx cap run android
+```
