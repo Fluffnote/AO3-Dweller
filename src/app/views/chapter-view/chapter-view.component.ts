@@ -18,8 +18,12 @@ import {ElementLoadDirective} from '../../UI/element-load.dir';
 import {History} from '../../data/models/history';
 import {ChapterPipeline} from '../../data/handlers/class/chapter-pipeline';
 import {HistoryMgmt} from '../../data/handlers/history-mgmt';
-import {HideHeaderDirective} from '../../UI/hide-header.dir';
+import {HideOverlayDirective} from '../../UI/hide-header.dir';
 import {BackButtonComponent} from '../../UI/back-button/back-button.component';
+import {NgClass} from '@angular/common';
+import {StatusBar} from '@capacitor/status-bar';
+import {StatusBumperComponent} from '../../UI/status-bumper/status-bumper.component';
+import {HideHeaderComponent} from '../../UI/hide-header/hide-header.component';
 
 @Component({
   selector: 'views-chapter-view',
@@ -39,9 +43,12 @@ import {BackButtonComponent} from '../../UI/back-button/back-button.component';
     IonToolbar,
     ElementLoadDirective,
     RouterLink,
-    HideHeaderDirective,
+    HideOverlayDirective,
     BackButtonComponent,
-    IonLabel
+    IonLabel,
+    NgClass,
+    StatusBumperComponent,
+    HideHeaderComponent
   ]
 })
 export class ChapterViewComponent  implements OnInit, OnDestroy {
@@ -66,6 +73,8 @@ export class ChapterViewComponent  implements OnInit, OnDestroy {
   maxHeight: number = 0;
   savedScrollPos: number = 0;
   scrollDiff: number = 100;
+
+  hideHeader: boolean = false;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -122,10 +131,15 @@ export class ChapterViewComponent  implements OnInit, OnDestroy {
     }
   }
 
+  hideChange(e: boolean) {
+    if (e) StatusBar.hide();
+    else StatusBar.show();
+    this.hideHeader = e;
+  }
+
   scrollHandler(event: any) {
     if (Math.abs(event.detail.scrollTop - this.savedScrollPos) >= this.scrollDiff) {
       this.savedScrollPos = JSON.parse(JSON.stringify(event.detail.scrollTop));
-      // logger.info("pos: "+Math.round((this.savedScrollPos/this.maxHeight)*100)); // Read percentage
       if (this.history != null) this.history.scrollPosition = this.savedScrollPos;
       this.historyMgmt.update(this.history!);
     }

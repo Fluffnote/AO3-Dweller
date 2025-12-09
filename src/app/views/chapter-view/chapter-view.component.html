@@ -1,19 +1,24 @@
-<ion-header #Header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ui-back-button></ui-back-button>
-    </ion-buttons>
-    <ion-buttons slot="secondary">
-      <ion-button (click)="openWebPage()"><ion-icon slot="icon-only" name="globe-outline"></ion-icon></ion-button>
-    </ion-buttons>
-    <ion-title>{{ (history!=null)?history!.workTitle:'' }}</ion-title>
-  </ion-toolbar>
+<ion-header>
+  <ui-status-border [hide]="hideHeader" [changeColor]="true"></ui-status-border>
 </ion-header>
-<ion-content #Content id="OuterContent" [scrollEvents]="true" [scrollY]="true" (ionScroll)="scrollHandler($any($event))" UIHideHeader [header]="Header">
-<!--  <div class="top-border"></div>-->
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+<ion-content #Content
+             id="OuterContent"
+             [scrollEvents]="true"
+             [scrollY]="true"
+             [fullscreen]="true"
+             (ionScroll)="scrollHandler($any($event))"
+             HideOverlay (hide)="hideChange($event)">
+  <ui-hide-header [hide]="hideHeader" [allowRefresh]="true" (refresh)="handleRefresh($event)">
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ui-back-button></ui-back-button>
+      </ion-buttons>
+      <ion-buttons slot="secondary">
+        <ion-button (click)="openWebPage()"><ion-icon slot="icon-only" name="globe-outline"></ion-icon></ion-button>
+      </ion-buttons>
+      <ion-title>{{ (history!=null)?history!.workTitle:'' }}</ion-title>
+    </ion-toolbar>
+  </ui-hide-header>
   <div id="InnerContent" class="w-100">
     @if (chapter != null && history != null) {
       <h3 class="mx-3 mt-3">{{ chapter!.chapterHeader }}</h3>
@@ -46,11 +51,11 @@
         </div>
       }
     }
-    @else {
-      <div class="position-relative h-100 w-100">
-        <div class="position-absolute top-50 start-50 translate-middle"><ion-spinner></ion-spinner></div>
-      </div>
-    }
-    <div class="bottom-bumper pt-3"></div>
   </div>
+  @if (chapter == null || history == null) {
+    <div class="position-relative h-100 w-100">
+      <div class="position-absolute top-50 start-50 translate-middle"><ion-spinner></ion-spinner></div>
+    </div>
+  }
+  <div class="bottom-bumper pt-3"></div>
 </ion-content>

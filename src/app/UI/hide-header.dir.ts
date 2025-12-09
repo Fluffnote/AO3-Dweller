@@ -1,45 +1,44 @@
-import { Directive, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import {Directive, EventEmitter, HostListener, Input, OnInit, Output, Renderer2} from '@angular/core';
 import { DomController } from '@ionic/angular';
 import {StatusBar} from '@capacitor/status-bar';
 
 @Directive({
-  selector: '[UIHideHeader]'
+  selector: '[HideOverlay]'
 })
-export class HideHeaderDirective implements OnInit {
+export class HideOverlayDirective {
 
-  @Input('header') header: any;
+  @Output("hide") hide = new EventEmitter<boolean>();
 
   private lastY = 0;
   private lag = 100;
+  private _hide = false;
 
-  constructor(
-    private renderer: Renderer2,
-    private domCtrl: DomController
-  ) { }
-
-  ngOnInit(): void {
-    this.header = this.header.el;
-    this.domCtrl.write(() => {
-      this.renderer.setStyle(this.header, 'transition', 'margin-top 700ms');
-    });
-  }
+  constructor() { }
 
   @HostListener('ionScroll', ['$event']) onContentScroll($event: any) {
     if (Math.abs($event.detail.scrollTop - this.lastY) >= this.lag) {
       if ($event.detail.scrollTop > this.lastY) {
-        this.domCtrl.write(() => {
-          this.renderer.setStyle(this.header, 'margin-top', `-${ this.header.clientHeight }px`);
-        });
-        StatusBar.hide();
+        this._hide = true;
+        this.hide.emit(true);
+        // StatusBar.hide();
       } else {
-        this.domCtrl.write(() => {
-          this.renderer.setStyle(this.header, 'margin-top', '0');
-        });
-        StatusBar.show();
+        this._hide = false;
+        this.hide.emit(false);
+        // StatusBar.show();
       }
 
       this.lastY = $event.detail.scrollTop;
     }
   }
+
+  // @HostListener('click', ['$event']) onClick(e: any) {
+  //   this._hide = !this._hide;
+  //   this.hide.emit(this._hide);
+  // }
+
+  // @HostListener('touchstart', ['$event']) onTouch(e: any) {
+  //   this._hide = !this._hide;
+  //   this.hide.emit(this._hide);
+  // }
 
 }

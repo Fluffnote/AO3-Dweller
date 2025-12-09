@@ -16,7 +16,9 @@ import {logger} from '../../../data/handlers/logger';
 import {Router} from '@angular/router';
 import {InfiniteScrollCustomEvent} from '@ionic/angular';
 import {Keyboard} from '@capacitor/keyboard';
-import {HideHeaderDirective} from '../../../UI/hide-header.dir';
+import {HideOverlayDirective} from '../../../UI/hide-header.dir';
+import {HideHeaderComponent} from '../../../UI/hide-header/hide-header.component';
+import {StatusBumperComponent} from '../../../UI/status-bumper/status-bumper.component';
 
 @Component({
   selector: 'views-search-sub-view',
@@ -35,7 +37,9 @@ import {HideHeaderDirective} from '../../../UI/hide-header.dir';
     SearchCardComponent,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
-    HideHeaderDirective
+    HideOverlayDirective,
+    HideHeaderComponent,
+    StatusBumperComponent
   ]
 })
 export class SearchSubViewComponent  implements OnInit {
@@ -50,6 +54,8 @@ export class SearchSubViewComponent  implements OnInit {
   amountFound: number = -1;
   works: Work[] = [];
   searchEnd: boolean = false;
+
+  hideHeader: boolean = false;
 
   ngOnInit() {
     this.search.amountFound.subscribe(amount => this.amountFound = amount);

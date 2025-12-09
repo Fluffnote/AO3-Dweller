@@ -7,7 +7,7 @@
     <hr class="my-0">
     <div [routerLink]="'/work/' + history.workId + '/chapter/' + history.chapterId">
       <p class="my-2">{{history.chapterHeader}}</p>
-      <ion-progress-bar [value]="progressAmount" [color]="progressAmount==1?'success':'warning'"></ion-progress-bar>
+      <ion-progress-bar [value]="progressAmount" [color]="progressAmount>=1?'success':'warning'"></ion-progress-bar>
     </div>
   </div>
 }
