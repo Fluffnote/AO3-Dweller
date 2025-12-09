@@ -1,19 +1,19 @@
 <ion-header #Header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ui-back-button></ui-back-button>
-    </ion-buttons>
-    <ion-buttons slot="secondary">
-<!--      <ion-button (click)="toggleBookmark()"><ion-icon slot="icon-only" [name]="bookmarked?'bookmark':'bookmark-outline'"></ion-icon></ion-button>-->
-      <ion-button (click)="openWebPage()"><ion-icon slot="icon-only" name="globe-outline"></ion-icon></ion-button>
-    </ion-buttons>
-    <ion-title>{{ (work!=null)?work!.title:'' }}</ion-title>
-  </ion-toolbar>
+  <ui-status-border [hide]="hideHeader"></ui-status-border>
 </ion-header>
-<ion-content [scrollEvents]="true" UIHideHeader [header]="Header">
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+<ion-content [scrollEvents]="true" HideOverlay (hide)="hideHeader = $event">
+  <ui-hide-header [hide]="hideHeader" [allowRefresh]="true" (refresh)="handleRefresh($event)">
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ui-back-button></ui-back-button>
+      </ion-buttons>
+      <ion-buttons slot="secondary">
+        <!--      <ion-button (click)="toggleBookmark()"><ion-icon slot="icon-only" [name]="bookmarked?'bookmark':'bookmark-outline'"></ion-icon></ion-button>-->
+        <ion-button (click)="openWebPage()"><ion-icon slot="icon-only" name="globe-outline"></ion-icon></ion-button>
+      </ion-buttons>
+      <ion-title>{{ (work!=null)?work!.title:'' }}</ion-title>
+    </ion-toolbar>
+  </ui-hide-header>
   @if (work != null) {
     <h1 class="mx-3 mt-3" [HoldToCopy]="work!.title">{{ work!.title }}</h1>
     <div class="mx-3 mt-4"><views-work-view-metadata [work]="work"></views-work-view-metadata></div>

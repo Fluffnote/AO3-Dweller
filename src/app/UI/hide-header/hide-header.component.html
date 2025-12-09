@@ -1,0 +1,10 @@
+<div [ngClass]="hide?'hide':''" class="toolbar">
+  <ng-content></ng-content>
+</div>
+@if (allowRefresh) {
+  <div>
+    <ion-refresher slot="fixed" (ionRefresh)="_refresh($event)" style="top: 60px; z-index: 900 !important;">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  </div>
+}

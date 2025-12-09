@@ -1,14 +1,17 @@
 <ion-header #Header>
-  <ion-toolbar color="primary">
-    <ion-searchbar #SearchBar class="p-0 shadow-none mx-2" color="primary" (ionChange)="onSearchChange($event)"></ion-searchbar>
-<!--    <ion-buttons slot="primary">-->
-<!--      <ion-button>-->
-<!--        <ion-icon slot="icon-only" name="filter"></ion-icon>-->
-<!--      </ion-button>-->
-<!--    </ion-buttons>-->
-  </ion-toolbar>
+  <ui-status-border [hide]="hideHeader"></ui-status-border>
 </ion-header>
-<ion-content [scrollEvents]="true" UIHideHeader [header]="Header">
+<ion-content [scrollEvents]="true" HideOverlay (hide)="hideHeader = $event">
+  <ui-hide-header [hide]="hideHeader">
+    <ion-toolbar color="primary">
+      <ion-searchbar #SearchBar class="p-0 shadow-none mx-2" color="primary" (ionChange)="onSearchChange($event)"></ion-searchbar>
+      <!--    <ion-buttons slot="primary">-->
+      <!--      <ion-button>-->
+      <!--        <ion-icon slot="icon-only" name="filter"></ion-icon>-->
+      <!--      </ion-button>-->
+      <!--    </ion-buttons>-->
+    </ion-toolbar>
+  </ui-hide-header>
   @if (amountFound > -1) {
     @if (amountFound > 0) {
       <div class="mx-3 mt-3"><span>{{ amountFound | number }} Found</span></div>

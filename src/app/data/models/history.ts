@@ -5,6 +5,6 @@ export class History {
   author: string = "";
   chapterHeader: string = "";
   scrollPosition: number = 0;
-  scrollMax: number = 0;
+  scrollMax: number = 1;
   accessDate: Date = new Date(0);
 }

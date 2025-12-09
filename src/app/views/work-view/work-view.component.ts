@@ -20,12 +20,14 @@ import {DropDownHTMLComponent} from '../../UI/drop-down-html/drop-down-html.comp
 import {SQL} from '../../data/DB/sql';
 import {logger} from '../../data/handlers/logger';
 import {WorkPipeline} from '../../data/handlers/class/work-pipeline';
-import {HideHeaderDirective} from '../../UI/hide-header.dir';
+import {HideOverlayDirective} from '../../UI/hide-header.dir';
 import {UIHoldToCopyDirective} from '../../UI/hold-to-copy.dir';
 import {BackButtonComponent} from '../../UI/back-button/back-button.component';
 import {History} from '../../data/models/history';
 import {Chapter} from '../../data/models/chapter';
 import {HistoryMgmt} from '../../data/handlers/history-mgmt';
+import {HideHeaderComponent} from '../../UI/hide-header/hide-header.component';
+import {StatusBumperComponent} from '../../UI/status-bumper/status-bumper.component';
 
 @Component({
     selector: 'views-work-view',
@@ -51,10 +53,12 @@ import {HistoryMgmt} from '../../data/handlers/history-mgmt';
     IonItem,
     IonLabel,
     RouterLink,
-    HideHeaderDirective,
+    HideOverlayDirective,
     UIHoldToCopyDirective,
     BackButtonComponent,
     NgClass,
+    HideHeaderComponent,
+    StatusBumperComponent,
   ]
 })
 export class WorkViewComponent  implements OnInit {
@@ -70,6 +74,8 @@ export class WorkViewComponent  implements OnInit {
   workParser = new WorkParser();
   workId: string | null = null;
   work: Work | null = null;
+
+  hideHeader: boolean = false;
 
   bookmarked: boolean = false;
 
