@@ -71,12 +71,12 @@ export class HistoryMgmt {
         history.scrollMax = historyData.SCROLL_MAX;
       }
       else if (createNew) { // Create a new entry
-        const works = await sql.queryPromise(`SELECT * FROM WORK_CACHE WHERE ID = ${workId}`);
-        if (works.length > 0) {
-          const workData = works[0];
-          history.workTitle = workData.TITLE;
-          history.author = workData.AUTHOR;
-        }
+        // const works = await sql.queryPromise(`SELECT * FROM WORKS WHERE ID = ${workId}`);
+        // if (works.length > 0) {
+        //   const workData = works[0];
+        //   history.workTitle = workData.TITLE;
+        //   history.author = workData.AUTHOR;
+        // }
         history.accessDate = new Date();
 
         const insertSQL =
@@ -130,11 +130,11 @@ export class HistoryMgmt {
   }
 
   async update(history: History): Promise<void> {
-    const updateSQL = `UPDATE HISTORY SET CHAPTER_HEADER = ?, SCROLL_POSITION = ?, SCROLL_MAX = ?,
+    const updateSQL = `UPDATE HISTORY SET WORK_TITLE = ?, AUTHOR = ?, CHAPTER_HEADER = ?, SCROLL_POSITION = ?, SCROLL_MAX = ?,
                                           ACCESS_DATE = ?
                        WHERE CHAPTER_ID = ${history.chapterId} AND WORK_ID = ${history.workId}`;
     await this.sql.execute(updateSQL, [
-      history.chapterHeader, history.scrollPosition, history.scrollMax,
+      history.workTitle, history.author, history.chapterHeader, history.scrollPosition, history.scrollMax,
       new Date()
     ])
   }

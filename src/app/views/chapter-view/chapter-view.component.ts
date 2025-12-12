@@ -99,6 +99,8 @@ export class ChapterViewComponent  implements OnInit, OnDestroy {
           this.history = history;
           // logger.info("pos: "+this.history.scrollPosition+" max: "+this.history.scrollMax);
           history.chapterHeader = JSON.parse(JSON.stringify(this.chapter!.chapterHeader));
+          history.author = JSON.parse(JSON.stringify(this.chapter!.author));
+          history.workTitle = JSON.parse(JSON.stringify(this.chapter!.workTitle));
         })
       });
     }

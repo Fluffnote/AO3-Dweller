@@ -45,7 +45,7 @@ export class ChapterPipeline {
 
   private responseToChapter(startObj: Chapter, response: HttpResponse): Chapter {
     let chapter = new ChapterParser().parse(startObj, new DOMParser().parseFromString(response.data, "text/html"))
-    ChapterPipeline.Chapter2DB(this.sql, chapter); // Caching object
+    // ChapterPipeline.Chapter2DB(this.sql, chapter); // Caching object
     return chapter;
   }
 
@@ -54,7 +54,7 @@ export class ChapterPipeline {
     chapter.workId = workId;
     chapter.id = chapterId;
     try {
-      const chapters = await sql.queryPromise(`SELECT * FROM CHAPTER_CACHE WHERE CHAPTER_ID = ${chapter.id} AND WORK_ID = ${chapter.workId}`);
+      const chapters = await sql.queryPromise(`SELECT * FROM CHAPTER WHERE CHAPTER_ID = ${chapter.id} AND WORK_ID = ${chapter.workId}`);
       if (chapters.length > 0) {
         const chapterData = chapters[0];
         chapter.id = chapterData.CHAPTER_ID;
@@ -91,10 +91,10 @@ export class ChapterPipeline {
   }
 
   static async Chapter2DB(sql:SQL, chapter: Chapter): Promise<void> {
-    const check = await sql.queryPromise(`SELECT * FROM CHAPTER_CACHE WHERE CHAPTER_ID = ${chapter.id} AND WORK_ID = ${chapter.workId}`);
+    const check = await sql.queryPromise(`SELECT * FROM CHAPTER WHERE CHAPTER_ID = ${chapter.id} AND WORK_ID = ${chapter.workId}`);
     if (check.length == 0) { // Insert
       const insertSQL =
-        `INSERT INTO CHAPTER_CACHE (CHAPTER_ID, WORK_ID, NEXT_ID, ORDER_NUM, CHAPTER_LIST_HEADER,
+        `INSERT INTO CHAPTER (CHAPTER_ID, WORK_ID, NEXT_ID, ORDER_NUM, CHAPTER_LIST_HEADER,
                                    CHAPTER_HEADER, SUMMARY, NOTES, END_NOTES, BODY,
                                    LAST_FETCHED_DATE, PARSER_VERSION)
          VALUES (?, ?, ?, ?, ?,
@@ -108,7 +108,7 @@ export class ChapterPipeline {
     }
     else { // Update
       const updateSQL =
-        `UPDATE CHAPTER_CACHE SET NEXT_ID = ?, ORDER_NUM = ?, CHAPTER_LIST_HEADER = ?,
+        `UPDATE CHAPTER SET NEXT_ID = ?, ORDER_NUM = ?, CHAPTER_LIST_HEADER = ?,
                                   CHAPTER_HEADER = ?, SUMMARY = ?, NOTES = ?, END_NOTES = ?, BODY = ?,
                                   LAST_FETCHED_DATE = ?, PARSER_VERSION = ?
          WHERE CHAPTER_ID = ${chapter.id} AND WORK_ID = ${chapter.workId}`;
@@ -123,7 +123,7 @@ export class ChapterPipeline {
   static async WorkChapters(sql:SQL, workId: number): Promise<Chapter[]> {
     let chapters: Chapter[] = [];
 
-    const check = await sql.queryPromise(`SELECT * FROM CHAPTER_CACHE WHERE WORK_ID = ${workId} ORDER BY ORDER_NUM ASC`);
+    const check = await sql.queryPromise(`SELECT * FROM CHAPTER WHERE WORK_ID = ${workId} ORDER BY ORDER_NUM ASC`);
     if (check.length > 0) {
       for (let chapterData of check) {
         let chapter = new Chapter();

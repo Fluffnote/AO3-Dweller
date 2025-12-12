@@ -82,6 +82,19 @@ export class ChapterParser extends ParserBase implements Parser {
 
 
 
+    // Work metadata
+
+    // Set Title
+    this.ifClassExists(dom.body, "title heading", (list) => {
+      chapter.workTitle = (list[0] as HTMLHeadingElement).innerText.trim();
+    })
+    // Set Author
+    this.ifClassExists(dom.body, "byline heading", (list) => {
+      chapter.author = ((list[0] as HTMLHeadingElement).children[0] as HTMLAnchorElement).text.trim();
+    })
+
+
+
     // logger.info(JSON.stringify(chapter))
     return chapter;
   }

@@ -33,8 +33,8 @@ export class WorkPipeline {
   }
 
   private refreshWork(work: Work, refreshType: number): Observable<Work> {
-    if (refreshType >= 2 || (refreshType == 1 && work.lastFetchDate.getTime() < new Date().getTime() - (24 * 60 * 60 * 1000))) {
-      return this.ao3.getWorkPage(work.id).pipe(map(response => this.responseToWork(work, response)));
+    if (refreshType >= 2 || (refreshType == 1 && work.lastFetchDate.getTime() < new Date().getTime() - (30 * 24 * 60 * 60 * 1000))) { // one month-ish
+      return this.ao3.getWorkPage(work.id).pipe(concatMap(response => createObservable(this.responseToWork, this.sql, work, response) as Observable<Work>));
     }
 
     // Only send db Work
@@ -44,9 +44,14 @@ export class WorkPipeline {
     });
   }
 
-  private responseToWork(startObj: Work, response: HttpResponse): Work {
+  private async responseToWork(sql:SQL, startObj: Work, response: HttpResponse): Promise<Work> {
     let work = new WorkParser().parse(startObj, new DOMParser().parseFromString(response.data, "text/html"))
-    WorkPipeline.Work2DB(this.sql, work); // Caching object
+    if (work.id != null && work.chapters != null && work.chapters.length > 0) {
+      for (let chapter of work.chapters) {
+        chapter.history = await HistoryMgmt.DB2History(sql, work.id, chapter.id, false);
+      }
+    }
+    // WorkPipeline.Work2DB(this.sql, work); // Caching object
     return work;
   }
 
@@ -54,7 +59,7 @@ export class WorkPipeline {
     let work = new Work();
     work.id = id;
     try {
-      const works = await sql.queryPromise(`SELECT * FROM WORK_CACHE WHERE ID = ${id}`);
+      const works = await sql.queryPromise(`SELECT * FROM WORKS WHERE ID = ${id}`);
       if (works.length > 0) {
         const workData = works[0];
         work.id = workData.ID;
@@ -67,11 +72,11 @@ export class WorkPipeline {
         work.statusSymbol = workData.STATUS_SYMBOL;
         work.rating = workData.RATING;
         work.warning = workData.WARNING;
-        work.categories = workData.CATEGORIES.split("|;|");
-        work.fandoms = workData.FANDOMS.split("|;|");
-        work.relationships = workData.REALATIONSHIPS.split("|;|");
-        work.characters = workData.CHARACTERS.split("|;|");
-        work.freeforms = workData.FREEFORMS.split("|;|");
+        // work.categories = workData.CATEGORIES.split("|;|");
+        // work.fandoms = workData.FANDOMS.split("|;|");
+        // work.relationships = workData.REALATIONSHIPS.split("|;|");
+        // work.characters = workData.CHARACTERS.split("|;|");
+        // work.freeforms = workData.FREEFORMS.split("|;|");
         work.language = workData.LANGUAGE_ID;
         work.publishedDate = workData.PUBLISHED_DATE != null? new Date(workData.PUBLISHED_DATE) : null;
         work.lastUpdatedDate = workData.LAST_UPDATED_DATE != null? new Date(workData.LAST_UPDATED_DATE) : null;
@@ -101,10 +106,10 @@ export class WorkPipeline {
   }
 
   static async Work2DB(sql:SQL, work: Work): Promise<void> {
-    const check = await sql.queryPromise("SELECT * FROM WORK_CACHE WHERE id = " + work.id);
+    const check = await sql.queryPromise("SELECT * FROM WORKS WHERE id = " + work.id);
     if (check.length == 0) { // Insert
       const insertSQL =
-        `INSERT INTO WORK_CACHE (ID, TITLE, AUTHOR, SUMMARY, RATING_SYMBOL,
+        `INSERT INTO WORKS (ID, TITLE, AUTHOR, SUMMARY, RATING_SYMBOL,
                                  RPO_SYMBOL, WARNING_SYMBOL, STATUS_SYMBOL, RATING, WARNING,
                                  CATEGORIES, FANDOMS, REALATIONSHIPS, CHARACTERS, FREEFORMS,
                                  LANGUAGE_ID, PUBLISHED_DATE, LAST_UPDATED_DATE, COMPLETE_DATE, CHAPTER_STATS,
@@ -127,7 +132,7 @@ export class WorkPipeline {
     }
     else { // Update
       const updateSQL =
-        `UPDATE WORK_CACHE SET TITLE = ?, AUTHOR = ?, SUMMARY = ?, RATING_SYMBOL = ?,
+        `UPDATE WORKS SET TITLE = ?, AUTHOR = ?, SUMMARY = ?, RATING_SYMBOL = ?,
                                RPO_SYMBOL = ?, WARNING_SYMBOL = ?, STATUS_SYMBOL = ?, RATING = ?, WARNING = ?,
                                CATEGORIES = ?, FANDOMS = ?, REALATIONSHIPS = ?, CHARACTERS = ?, FREEFORMS = ?,
                                LANGUAGE_ID = ?, PUBLISHED_DATE = ?, LAST_UPDATED_DATE = ?, COMPLETE_DATE = ?, CHAPTER_STATS = ?,

@@ -20,5 +20,7 @@ export class Chapter {
   history: History | null = null;
   lastFetchDate: Date = new Date(0);
   parserVersion: number = -1;
+  workTitle: string = "";
+  author: string = "";
 
 }
