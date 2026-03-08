@@ -39,9 +39,6 @@ import {StatusBumperComponent} from '../../UI/status-bumper/status-bumper.compon
     IonTitle,
     IonToolbar,
     IonButtons,
-    IonBackButton,
-    IonRefresher,
-    IonRefresherContent,
     WorkViewMetadataComponent,
     IonButton,
     IonIcon,
@@ -77,8 +74,6 @@ export class WorkViewComponent  implements OnInit {
 
   hideHeader: boolean = false;
 
-  bookmarked: boolean = false;
-
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.workId = params.get('workId');
@@ -94,7 +89,7 @@ export class WorkViewComponent  implements OnInit {
   }
 
   toggleBookmark() {
-    this.bookmarked = !this.bookmarked
+    if (this.work != null) this.workPipe.toggleBookmark(this.work).subscribe(out => {this.work = JSON.parse(JSON.stringify(out))})
   }
 
   openWebPage() {

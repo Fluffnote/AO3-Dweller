@@ -6,7 +6,6 @@ import {NgClass, NgStyle} from '@angular/common';
   templateUrl: './status-bumper.component.html',
   styleUrls: ['./status-bumper.component.less'],
   imports: [
-    NgClass,
     NgStyle
   ]
 })

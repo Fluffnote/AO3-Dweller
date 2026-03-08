@@ -16,12 +16,6 @@ import {NgClass} from '@angular/common';
     templateUrl: './hide-header.component.html',
     styleUrls: ['./hide-header.component.less'],
   imports: [
-    BackButtonComponent,
-    IonButton,
-    IonButtons,
-    IonIcon,
-    IonTitle,
-    IonToolbar,
     NgClass,
     IonRefresher,
     IonRefresherContent

@@ -17,7 +17,6 @@ import {HistorySubViewComponent} from '../../timeline-sub-views/history-sub-view
   imports: [
     IonContent,
     IonHeader,
-    IonTitle,
     IonToolbar,
     IonSegment,
     IonSegmentButton,

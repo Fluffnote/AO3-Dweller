@@ -7,4 +7,5 @@ export class History {
   scrollPosition: number = 0;
   scrollMax: number = 1;
   accessDate: Date = new Date(0);
+  completed: boolean = false;
 }

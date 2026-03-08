@@ -16,9 +16,7 @@ import {UIHoldToCopyDirective} from '../hold-to-copy.dir';
     IonIcon,
     DropDownHTMLComponent,
     DecimalPipe,
-    IonNavLink,
     RouterLink,
-    IonChip,
     UIHoldToCopyDirective
   ]
 })

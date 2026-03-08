@@ -10,7 +10,6 @@ import {HistoryMgmt} from '../../../data/handlers/history-mgmt';
   styleUrls: ['./extras-sub-view.component.less'],
   imports: [
     IonContent,
-    IonButton,
     IonItem,
     IonLabel,
   ]

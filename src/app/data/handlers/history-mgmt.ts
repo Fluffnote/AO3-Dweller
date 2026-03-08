@@ -40,6 +40,7 @@ export class HistoryMgmt {
           tempHistory.scrollPosition = historyData.SCROLL_POSITION;
           tempHistory.scrollMax = historyData.SCROLL_MAX;
           tempHistory.accessDate = historyData.ACCESS_DATE;
+          tempHistory.completed = historyData.COMPLETED==1;
           out.push(tempHistory);
         }
       }

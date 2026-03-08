@@ -1,7 +1,7 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom" color="primary">
     <ion-tab-button tab="search">
-      <ion-icon name="home"></ion-icon>
+      <ion-icon name="home" [lazy]="false"></ion-icon>
       Home
     </ion-tab-button>
 <!--    <ion-tab-button tab="filters">-->
@@ -9,15 +9,15 @@
 <!--      Filters-->
 <!--    </ion-tab-button>-->
     <ion-tab-button tab="timeline">
-      <ion-icon name="time"></ion-icon>
+      <ion-icon name="time" [lazy]="false"></ion-icon>
       Timeline
     </ion-tab-button>
-<!--    <ion-tab-button tab="library">-->
-<!--      <ion-icon name="library"></ion-icon>-->
-<!--      Library-->
-<!--    </ion-tab-button>-->
+    <ion-tab-button tab="library">
+      <ion-icon name="library" [lazy]="false"></ion-icon>
+      Library
+    </ion-tab-button>
     <ion-tab-button tab="settings">
-      <ion-icon name="ellipsis-horizontal"></ion-icon>
+      <ion-icon name="ellipsis-horizontal" [lazy]="false"></ion-icon>
       More
     </ion-tab-button>
   </ion-tab-bar>

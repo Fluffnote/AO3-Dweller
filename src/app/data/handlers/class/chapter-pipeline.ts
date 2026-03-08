@@ -8,6 +8,8 @@ import {ChapterParser} from '../../parsers/chapter-parser';
 import {HttpResponse} from '@capacitor/core';
 import {logger} from '../logger';
 import {HistoryMgmt} from '../history-mgmt';
+import {WorkPipeline} from './work-pipeline';
+import {Work} from '../../models/work';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +47,7 @@ export class ChapterPipeline {
 
   private responseToChapter(startObj: Chapter, response: HttpResponse): Chapter {
     let chapter = new ChapterParser().parse(startObj, new DOMParser().parseFromString(response.data, "text/html"))
-    // ChapterPipeline.Chapter2DB(this.sql, chapter); // Caching object
+    ChapterPipeline.Chapter2DB(this.sql, chapter); // Caching object
     return chapter;
   }
 
@@ -79,7 +81,17 @@ export class ChapterPipeline {
         chapter.lastFetchDate = chapterData.LAST_FETCHED_DATE != null? new Date(chapterData.LAST_FETCHED_DATE) : new Date(0);
         chapter.parserVersion = chapterData.PARSER_VERSION;
 
-        chapter.history = await HistoryMgmt.DB2History(sql, workId, chapterId, true)
+        chapter.history = await HistoryMgmt.DB2History(sql, workId, chapterId, true);
+        logger.info(JSON.stringify(chapter.history));
+
+        // fixing load from history card
+        try {
+          (new WorkPipeline(this.sql, this.ao3)).get(chapter.workId, 1).subscribe((work: Work) => {
+            chapter.workTitle = work.title;
+            chapter.author = work.author;
+          })
+        }
+        catch (err) { }
       }
     }
     catch (err) {

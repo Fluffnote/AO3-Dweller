@@ -40,6 +40,7 @@ export class Work {
 
   // Extra
   resumeChapterId: number | null = null;
+  bookmarked: boolean = false;
   lastFetchDate: Date = new Date(0);
   parserVersion: number = -1;
 

@@ -12,11 +12,6 @@ import {logger} from '../../data/handlers/logger';
   templateUrl: './history-card.component.html',
   styleUrls: ['./history-card.component.less'],
   imports: [
-    AO3SymbolsComponent,
-    DecimalPipe,
-    DropDownHTMLComponent,
-    IonIcon,
-    IonNavLink,
     RouterLink,
     IonProgressBar
   ]

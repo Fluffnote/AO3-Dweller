@@ -12,15 +12,15 @@
   <p>Follow the Archive on Twitter or Tumblr for status updates, and don't forget to check out the Organization for Transformative Works' news outlets for updates on our other projects!</p>
   <div>
     <ion-chip [outline]="true" (click)="openBrowser('https://www.transformativeworks.org/where-find-us/')">
-      <ion-icon name="open-outline"></ion-icon>
+      <ion-icon name="open-outline" [lazy]="false"></ion-icon>
       <ion-label>OTW News Outlets</ion-label>
     </ion-chip>
     <ion-chip [outline]="true" (click)="openBrowser('https://twitter.com/AO3_Status')">
-      <ion-icon name="logo-twitter"></ion-icon>
+      <ion-icon name="logo-twitter" [lazy]="false"></ion-icon>
       <ion-label>&#64;AO3_Status on Twitter</ion-label>
     </ion-chip>
     <ion-chip [outline]="true" (click)="openBrowser('https://ao3org.tumblr.com/')">
-      <ion-icon name="logo-tumblr"></ion-icon>
+      <ion-icon name="logo-tumblr" [lazy]="false"></ion-icon>
       <ion-label>ao3org on Tumblr</ion-label>
     </ion-chip>
   </div>

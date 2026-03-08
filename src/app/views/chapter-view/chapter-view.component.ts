@@ -36,17 +36,13 @@ import {HideHeaderComponent} from '../../UI/hide-header/hide-header.component';
     IonContent,
     IonHeader,
     IonIcon,
-    IonRefresher,
-    IonRefresherContent,
     IonSpinner,
     IonTitle,
     IonToolbar,
     ElementLoadDirective,
-    RouterLink,
     HideOverlayDirective,
     BackButtonComponent,
     IonLabel,
-    NgClass,
     StatusBumperComponent,
     HideHeaderComponent
   ]
@@ -62,7 +58,6 @@ export class ChapterViewComponent  implements OnInit, OnDestroy {
 
   @ViewChild("Content") content!: IonContent;
 
-  chapterParser = new ChapterParser();
   workId: string | null = null;
   chapterId: string | null = null;
   chapter: Chapter | null = null;

@@ -45,7 +45,17 @@ export class SQL {
         logger.error((err as Error).stack+"");
       }
     })
+
+    // Clean up on reload needed
+    await this.cacheCleanUp();
+
     logger.info("Database Initializing Done");
+  }
+
+  async cacheCleanUp(): Promise<void> {
+    await this.db.run("DELETE FROM WORKS WHERE ID NOT IN (SELECT WORK_ID FROM LIBRARY)");
+    await this.db.run("DELETE FROM WORK_TAGS WHERE WORK_ID NOT IN (SELECT ID FROM WORKS)");
+    await this.db.run("DELETE FROM TAGS WHERE ID NOT IN (SELECT TAG_ID FROM WORK_TAGS)");
   }
 
   async closeDatabase() {
