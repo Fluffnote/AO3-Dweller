@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {IonContent, IonHeader, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {IonContent, IonHeader, IonSpinner, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {Work} from '../../../data/models/work';
+import {LibraryMgmt} from '../../../data/handlers/library-mgmt';
+import {SearchCardComponent} from '../../../UI/search-card/search-card.component';
 
 @Component({
   selector: 'views-library-sub-view',
@@ -9,13 +12,20 @@ import {IonContent, IonHeader, IonTitle, IonToolbar} from '@ionic/angular/standa
     IonContent,
     IonHeader,
     IonTitle,
-    IonToolbar
+    IonToolbar,
+    IonSpinner,
+    SearchCardComponent
   ]
 })
 export class LibrarySubViewComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private libraryMgmt: LibraryMgmt) { }
 
-  ngOnInit() {}
+  libraryList: Work[] | null = null;
+
+  ngOnInit() {
+    this.libraryMgmt.updateLibraryList();
+    this.libraryMgmt.libraryList.subscribe(list => this.libraryList = list);
+  }
 
 }

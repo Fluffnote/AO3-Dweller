@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {SQL} from '../../DB/sql';
-import {concatMap, map, Observable} from 'rxjs';
+import {concatMap, Observable} from 'rxjs';
 import {Work} from '../../models/work';
 import {createObservable} from '../create-observable';
 import {AO3} from '../ao3';
@@ -29,7 +29,7 @@ export class WorkPipeline {
   // [refreshType] = 2 : Hard refresh - Will attempt to refresh info regardless of last fetch
   get(id: number, refreshType?: number): Observable<Work> {
     refreshType = refreshType ? refreshType : 0;
-    return createObservable(this.DB2Work, this.sql, id).pipe(concatMap(work => this.refreshWork(work as Work, refreshType)));
+    return createObservable(WorkPipeline.DB2Work, this.sql, id).pipe(concatMap(work => this.refreshWork(work as Work, refreshType)));
   }
 
   private refreshWork(work: Work, refreshType: number): Observable<Work> {
@@ -59,7 +59,7 @@ export class WorkPipeline {
     return work;
   }
 
-  private async DB2Work(sql:SQL, id: number): Promise<Work> {
+  static async DB2Work(sql:SQL, id: number): Promise<Work> {
     let work = new Work();
     work.id = id;
     try {
@@ -197,12 +197,13 @@ export class WorkPipeline {
   }
 
   private async toggleBookmarkAsync(sql:SQL, work: Work): Promise<Work> {
+    logger.info(JSON.stringify(work.bookmarked))
     if (work.bookmarked) { // remove bookmark
       await sql.execute(`DELETE FROM LIBRARY WHERE WORK_ID = ${work.id}`);
       work.bookmarked = false;
     }
     else { // add bookmark
-      await sql.execute(`INSERT INTO LIBRARY (WORK_ID, FOLDER_ID, ORDER_NUM) VALUES(${work.id}, 1, 0)`);
+      await sql.execute(`INSERT INTO LIBRARY (WORK_ID, FOLDER_ID, ORDER_NUM, DATE_ADDED) VALUES(${work.id}, 1, 0, datetime('now'))`);
       work.bookmarked = true;
     }
     return work;

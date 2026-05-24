@@ -1,24 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-  IonBackButton, IonButton,
+  IonButton,
   IonButtons,
   IonContent, IonFab, IonFabButton,
   IonHeader, IonIcon, IonItem, IonLabel, IonNavLink,
-  IonRefresher, IonRefresherContent, IonSpinner,
+  IonSpinner,
   IonTitle,
   IonToolbar
 } from "@ionic/angular/standalone";
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {Work} from '../../data/models/work';
-import {AO3} from '../../data/handlers/ao3';
 import {WorkParser} from '../../data/parsers/work-parser';
-import {DecimalPipe, NgClass} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {RefresherCustomEvent} from '@ionic/angular';
 import {WorkViewMetadataComponent} from './work-view-metadata/work-view-metadata.component';
 import {Browser} from '@capacitor/browser';
 import {DropDownHTMLComponent} from '../../UI/drop-down-html/drop-down-html.component';
-import {SQL} from '../../data/DB/sql';
-import {logger} from '../../data/handlers/logger';
 import {WorkPipeline} from '../../data/handlers/class/work-pipeline';
 import {HideOverlayDirective} from '../../UI/hide-header.dir';
 import {UIHoldToCopyDirective} from '../../UI/hold-to-copy.dir';
@@ -28,6 +25,7 @@ import {Chapter} from '../../data/models/chapter';
 import {HistoryMgmt} from '../../data/handlers/history-mgmt';
 import {HideHeaderComponent} from '../../UI/hide-header/hide-header.component';
 import {StatusBumperComponent} from '../../UI/status-bumper/status-bumper.component';
+import {LibraryMgmt} from '../../data/handlers/library-mgmt';
 
 @Component({
     selector: 'views-work-view',
@@ -58,14 +56,14 @@ import {StatusBumperComponent} from '../../UI/status-bumper/status-bumper.compon
     StatusBumperComponent,
   ]
 })
-export class WorkViewComponent  implements OnInit {
+export class WorkViewComponent  implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private ao3: AO3,
     private workPipe: WorkPipeline,
     private router: Router,
-    private historyMgmt: HistoryMgmt
+    private historyMgmt: HistoryMgmt,
+    private libraryMgmt: LibraryMgmt
   ) { }
 
   workParser = new WorkParser();
@@ -81,6 +79,10 @@ export class WorkViewComponent  implements OnInit {
     })
   }
 
+  ngOnDestroy() {
+    this.libraryMgmt.updateLibraryList();
+  }
+
   handleRefresh(event: RefresherCustomEvent) {
     if (this.workId != null) this.workPipe.get(Number(this.workId), 2).subscribe(work => {
       this.work = work;
@@ -89,7 +91,9 @@ export class WorkViewComponent  implements OnInit {
   }
 
   toggleBookmark() {
-    if (this.work != null) this.workPipe.toggleBookmark(this.work).subscribe(out => {this.work = JSON.parse(JSON.stringify(out))})
+    if (this.work != null) this.workPipe.toggleBookmark(this.work).subscribe(out => {
+      this.work = JSON.parse(JSON.stringify(out))
+    })
   }
 
   openWebPage() {

@@ -1,6 +1,5 @@
 import {Work} from '../models/work';
 import {Parser, ParserBase} from './parser';
-import {logger} from '../handlers/logger';
 import {Chapter} from '../models/chapter';
 import {ContentRating, ContentWarning, RPO, Status} from '../models/ao3-symbols.enum';
 
@@ -41,10 +40,22 @@ export class WorkParser extends ParserBase implements Parser {
     // Set Rating
     this.ifClassExists(dom.body, "rating tags", (list) => {
       work.rating = (list[list.length-1] as HTMLDivElement).innerText.trim();
+      if (work.rating == "Not Rated") work.ratingSymbol = ContentRating.None;
+      if (work.rating == "General Audiences") work.ratingSymbol = ContentRating.General;
+      if (work.rating == "Teen And Up Audiences") work.ratingSymbol = ContentRating.Teen;
+      if (work.rating == "Mature") work.ratingSymbol = ContentRating.Mature;
+      if (work.rating == "Explicit") work.ratingSymbol = ContentRating.Explicit;
     })
     // Set Warning
     this.ifClassExists(dom.body, "warning tags", (list) => {
       work.warning = (list[list.length-1] as HTMLDivElement).innerText.trim();
+      if (work.warning.includes("No Archive Warnings Apply")) work.warningSymbol = ContentWarning.None;
+      if (work.warning.includes("Chose Not To Use Archive Warnings")) work.warningSymbol = ContentWarning.Unspecified;
+      if (work.warning.includes("External")) work.warningSymbol = ContentWarning.External;
+      if (work.warning.includes("Graphic Depictions Of Violence")) work.warningSymbol = ContentWarning.Explicit;
+      if (work.warning.includes("Major Character Death")) work.warningSymbol = ContentWarning.Explicit;
+      if (work.warning.includes("Rape/Non-Con")) work.warningSymbol = ContentWarning.Explicit;
+      if (work.warning.includes("Underage Sex")) work.warningSymbol = ContentWarning.Explicit;
     })
     // Set Categories
     this.ifClassExists(dom.body, "category tags", (list) => {
@@ -53,6 +64,13 @@ export class WorkParser extends ParserBase implements Parser {
       for (let i = 0; i < ul.children.length; i++) {
         work.categories.push((ul.children[i] as HTMLLIElement).innerText.trim());
       }
+      if (work.categories.includes("No category")) work.rpoSymbol = RPO.None;
+      if (work.categories.includes("F/F")) work.rpoSymbol = RPO.FF;
+      if (work.categories.includes("M/M")) work.rpoSymbol = RPO.MM;
+      if (work.categories.includes("F/M")) work.rpoSymbol = RPO.FM;
+      if (work.categories.includes("Gen")) work.rpoSymbol = RPO.Gen;
+      if (work.categories.includes("Other")) work.rpoSymbol = RPO.Other;
+      if (work.categories.includes("Multi")) work.rpoSymbol = RPO.Multi;
     })
     // Set Fandoms
     this.ifClassExists(dom.body, "fandom tags", (list) => {

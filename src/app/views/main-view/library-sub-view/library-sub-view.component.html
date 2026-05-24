@@ -4,5 +4,23 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-
+  <div class="h-100 w-100">
+    @if (libraryList != null)  {
+      @if (libraryList.length > 0) {
+        @for (work of libraryList; track work.id) {
+          <div class="mx-2 mt-3"><ui-search-card [work]="work"></ui-search-card></div>
+        }
+      }
+      @else {
+        <div class="position-relative h-100 w-100">
+          <div class="position-absolute top-50 start-50 translate-middle"><h1>Nothin' here yet :3</h1></div>
+        </div>
+      }
+    }
+    @else {
+      <div class="position-relative h-100 w-100">
+        <div class="position-absolute top-50 start-50 translate-middle"><ion-spinner></ion-spinner></div>
+      </div>
+    }
+  </div>
 </ion-content>
