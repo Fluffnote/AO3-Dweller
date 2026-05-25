@@ -1,5 +1,5 @@
 @if (work != null) {
-  <div class="search-card w-100 p-3">
+  <div class="search-card w-100 p-3 position-relative">
     <div class="d-flex align-items-center" [routerLink]="'/work/' + work!.id">
       <ui-ao3-symbols
         [size]="45"
@@ -11,6 +11,9 @@
       <div class="ms-2 title-container" [HoldToCopy]="work.title">
         <span class="title-text">{{work.title}}</span>
       </div>
+      @if (work!.bookmarked) {
+        <div class="ms-auto bookmark-over"><ion-icon slot="icon-only" [name]="'bookmark'"></ion-icon></div>
+      }
     </div>
     <div class="d-flex align-items-center top-info mt-2" [routerLink]="'/work/' + work!.id">
       <span>{{work.author}}</span>
