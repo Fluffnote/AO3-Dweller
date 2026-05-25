@@ -119,14 +119,17 @@ export class WorkParser extends ParserBase implements Parser {
       // Set Published Date
       this.ifClassExists(stats, "published", (list) => {
         work.publishedDate = new Date((list[list.length-1] as HTMLDivElement).innerText.trim());
+        work.statusSymbol = Status.Completed;
       })
       // Set Status
       this.ifClassExists(stats, "status", (list) => {
         // Set Last Updated Date
         work.lastUpdatedDate = new Date((list[list.length-1] as HTMLDivElement).innerText.trim());
+        if (work.lastUpdatedDate != null) work.statusSymbol = Status.InProgress;
         // Set Complete Date
         if ((list[0] as HTMLDivElement).innerText.includes("Completed")) {
           work.completeDate = new Date((list[list.length-1] as HTMLDivElement).innerText.trim());
+          if (work.completeDate != null) work.statusSymbol = Status.Completed;
         }
       })
       // Set Chapter Stats
