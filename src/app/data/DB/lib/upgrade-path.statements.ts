@@ -49,6 +49,8 @@ export class UpgradePathStatements {
            WORK_ID             INTEGER  NOT NULL,
            NEXT_ID             INTEGER,
            ORDER_NUM           INTEGER,
+           WORK_TITLE          TEXT     NOT NULL,
+           AUTHOR              TEXT     NOT NULL,
            CHAPTER_LIST_HEADER TEXT,
            CHAPTER_HEADER      TEXT,
            SUMMARY             TEXT,

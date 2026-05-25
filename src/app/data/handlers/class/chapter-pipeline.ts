@@ -8,8 +8,6 @@ import {ChapterParser} from '../../parsers/chapter-parser';
 import {HttpResponse} from '@capacitor/core';
 import {logger} from '../logger';
 import {HistoryMgmt} from '../history-mgmt';
-import {WorkPipeline} from './work-pipeline';
-import {Work} from '../../models/work';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +60,9 @@ export class ChapterPipeline {
         chapter.id = chapterData.CHAPTER_ID;
         chapter.workId = chapterData.WORK_ID;
         chapter.nextId = chapterData.NEXT_ID;
-        chapter.order = chapterData.ORDER_NUM
+        chapter.order = chapterData.ORDER_NUM;
+        chapter.workTitle = chapterData.WORK_TITLE;
+        chapter.author = chapterData.AUTHOR;
         chapter.chapterListHeader = chapterData.CHAPTER_LIST_HEADER;
         chapter.chapterHeader = chapterData.CHAPTER_HEADER;
         chapter.summary = chapterData.SUMMARY;
@@ -82,15 +82,6 @@ export class ChapterPipeline {
         chapter.parserVersion = chapterData.PARSER_VERSION;
 
         chapter.history = await HistoryMgmt.DB2History(sql, workId, chapterId, true);
-
-        // fixing load from history card
-        try {
-          (new WorkPipeline(this.sql, this.ao3)).get(chapter.workId, 1).subscribe((work: Work) => {
-            chapter.workTitle = work.title;
-            chapter.author = work.author;
-          })
-        }
-        catch (err) { }
       }
     }
     catch (err) {
@@ -105,26 +96,26 @@ export class ChapterPipeline {
     const check = await sql.queryPromise(`SELECT * FROM CHAPTER WHERE CHAPTER_ID = ${chapter.id} AND WORK_ID = ${chapter.workId}`);
     if (check.length == 0) { // Insert
       const insertSQL =
-        `INSERT INTO CHAPTER (CHAPTER_ID, WORK_ID, NEXT_ID, ORDER_NUM, CHAPTER_LIST_HEADER,
-                                   CHAPTER_HEADER, SUMMARY, NOTES, END_NOTES, BODY,
-                                   LAST_FETCHED_DATE, PARSER_VERSION)
+        `INSERT INTO CHAPTER (CHAPTER_ID, WORK_ID, NEXT_ID, ORDER_NUM, WORK_TITLE,
+                              AUTHOR, CHAPTER_LIST_HEADER, CHAPTER_HEADER, SUMMARY, NOTES,
+                              END_NOTES, BODY, LAST_FETCHED_DATE, PARSER_VERSION)
          VALUES (?, ?, ?, ?, ?,
                  ?, ?, ?, ?, ?,
-                 ?, ?)`;
+                 ?, ?, ?, ?)`;
       await sql.execute(insertSQL, [
-        chapter.id, chapter.workId, chapter.nextId, chapter.order, chapter.chapterListHeader,
-        chapter.chapterHeader, chapter.summary, chapter.notes.join("|;|"), chapter.endNotes.join("|;|"), chapter.body,
-        chapter.lastFetchDate, chapter.parserVersion
+        chapter.id, chapter.workId, chapter.nextId, chapter.order, chapter.workTitle,
+        chapter.author, chapter.chapterListHeader, chapter.chapterHeader, chapter.summary, chapter.notes.join("|;|"),
+        chapter.endNotes.join("|;|"), chapter.body, chapter.lastFetchDate, chapter.parserVersion
       ])
     }
     else { // Update
       const updateSQL =
-        `UPDATE CHAPTER SET NEXT_ID = ?, ORDER_NUM = ?, CHAPTER_LIST_HEADER = ?,
-                                  CHAPTER_HEADER = ?, SUMMARY = ?, NOTES = ?, END_NOTES = ?, BODY = ?,
-                                  LAST_FETCHED_DATE = ?, PARSER_VERSION = ?
+        `UPDATE CHAPTER SET NEXT_ID = ?, ORDER_NUM = ?, WORK_TITLE = ?, AUTHOR = ?, CHAPTER_LIST_HEADER = ?,
+                            CHAPTER_HEADER = ?, SUMMARY = ?, NOTES = ?, END_NOTES = ?, BODY = ?,
+                            LAST_FETCHED_DATE = ?, PARSER_VERSION = ?
          WHERE CHAPTER_ID = ${chapter.id} AND WORK_ID = ${chapter.workId}`;
       await sql.execute(updateSQL, [
-        chapter.nextId, chapter.order, chapter.chapterListHeader,
+        chapter.nextId, chapter.order, chapter.workTitle, chapter.author, chapter.chapterListHeader,
         chapter.chapterHeader, chapter.summary, chapter.notes.join("|;|"), chapter.endNotes.join("|;|"), chapter.body,
         chapter.lastFetchDate, chapter.parserVersion
       ])
@@ -141,7 +132,9 @@ export class ChapterPipeline {
         chapter.workId = workId;
         chapter.id = chapterData.CHAPTER_ID;
         chapter.nextId = chapterData.NEXT_ID;
-        chapter.order = chapterData.ORDER_NUM
+        chapter.order = chapterData.ORDER_NUM;
+        chapter.workTitle = chapterData.WORK_TITLE;
+        chapter.author = chapterData.AUTHOR;
         chapter.chapterListHeader = chapterData.CHAPTER_LIST_HEADER;
         chapter.chapterHeader = chapterData.CHAPTER_HEADER;
         chapter.summary = chapterData.SUMMARY;
