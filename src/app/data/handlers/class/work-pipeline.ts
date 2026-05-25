@@ -226,6 +226,10 @@ export class WorkPipeline {
       if (!tag_old_ids.includes(new_id)) {
         await sql.execute(`INSERT INTO WORK_TAGS (WORK_ID, TAG_ID) VALUES (?, ?)`, [work_id, new_id]);
       }
+      else {
+        const index = tag_old_ids.indexOf(new_id);
+        if (index > -1) tag_old_ids.splice(index, 1);
+      }
     }
     for (let old_id of tag_old_ids) {
       await sql.execute(`DELETE FROM WORK_TAGS WHERE WORK_ID = ${work_id} AND TAG_ID = ${old_id}`);
