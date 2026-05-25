@@ -113,6 +113,21 @@ export class WorkViewComponent  implements OnInit, OnDestroy {
     return history.scrollPosition >= history.scrollMax? "complete" : "";
   }
 
+  chapterListText(chapter: Chapter): string {
+    let out: string;
+    if (chapter.chapterListHeader.length>0) out = chapter.chapterListHeader;
+    else out = chapter.chapterHeader;
+    return out;
+  }
+
+  chapterListSubText(chapter: Chapter): string {
+    let out = "";
+    if (chapter.history != null && chapter.history.scrollPosition < chapter.history.scrollMax) {
+      out = " - "+(Math.round((chapter.history.scrollPosition / chapter.history.scrollMax)*100))+"%"
+    }
+    return out;
+  }
+
   openChapter(chapter: Chapter) {
     if (chapter.history != null && (chapter.history.scrollPosition >= chapter.history.scrollMax)) {
       this.historyMgmt.resetPos(this.work!.id, chapter.id)
