@@ -12,7 +12,12 @@
       <!--    </ion-buttons>-->
     </ion-toolbar>
   </ui-hide-header>
-  @if (amountFound > -1) {
+  @if (loading) {
+    <div class="position-relative h-100 w-100">
+      <div class="position-absolute top-50 start-50 translate-middle"><ion-spinner></ion-spinner></div>
+    </div>
+  }
+  @else if (amountFound > -1) {
     @if (amountFound > 0) {
       <div class="mx-3 mt-3"><span>{{ amountFound | number }} Found</span></div>
     }

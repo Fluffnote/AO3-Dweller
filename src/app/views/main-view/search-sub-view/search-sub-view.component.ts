@@ -1,10 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {
-  IonButton,
-  IonButtons,
   IonContent,
-  IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent,
-  IonSearchbar,
+  IonHeader, IonInfiniteScroll, IonInfiniteScrollContent,
+  IonSearchbar, IonSpinner,
   IonToolbar
 } from '@ionic/angular/standalone';
 import {HomeSubViewComponent} from './home-sub-view/home-sub-view.component';
@@ -36,7 +34,8 @@ import {StatusBumperComponent} from '../../../UI/status-bumper/status-bumper.com
     IonInfiniteScrollContent,
     HideOverlayDirective,
     HideHeaderComponent,
-    StatusBumperComponent
+    StatusBumperComponent,
+    IonSpinner
   ]
 })
 export class SearchSubViewComponent  implements OnInit {
@@ -51,6 +50,7 @@ export class SearchSubViewComponent  implements OnInit {
   amountFound: number = -1;
   works: Work[] = [];
   searchEnd: boolean = false;
+  loading: boolean = false;
 
   hideHeader: boolean = false;
 
@@ -61,6 +61,7 @@ export class SearchSubViewComponent  implements OnInit {
   }
 
   onSearchChange(event: Event) {
+    this.loading = true;
     let value = (event.target as HTMLIonSearchbarElement).value;
     if (typeof value === "string" && value.length > 0) {
       if (value.includes("/works/")) {
@@ -74,7 +75,10 @@ export class SearchSubViewComponent  implements OnInit {
         this.router.navigate(['/work', value.replace("work:", "")]);
         this.searchBar.value = "";
       }
-      else this.search.searchText(value as string).subscribe(() => { Keyboard.hide(); });
+      else this.search.searchText(value as string).subscribe(() => {
+        Keyboard.hide();
+          this.loading = false;
+      });
     }
     else {
       this.amountFound = -1
@@ -83,7 +87,7 @@ export class SearchSubViewComponent  implements OnInit {
   }
 
   onSearchNext(event: InfiniteScrollCustomEvent) {
-    this.search.searchNext().subscribe(result => {
+    this.search.searchNext().subscribe(() => {
       event.target.complete();
     });
   }
