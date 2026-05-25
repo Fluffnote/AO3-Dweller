@@ -82,7 +82,6 @@ export class ChapterPipeline {
         chapter.parserVersion = chapterData.PARSER_VERSION;
 
         chapter.history = await HistoryMgmt.DB2History(sql, workId, chapterId, true);
-        logger.info(JSON.stringify(chapter.history));
 
         // fixing load from history card
         try {

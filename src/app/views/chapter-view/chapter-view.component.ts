@@ -44,7 +44,8 @@ import {HideHeaderComponent} from '../../UI/hide-header/hide-header.component';
     BackButtonComponent,
     IonLabel,
     StatusBumperComponent,
-    HideHeaderComponent
+    HideHeaderComponent,
+    NgClass
   ]
 })
 export class ChapterViewComponent  implements OnInit, OnDestroy {
@@ -83,9 +84,11 @@ export class ChapterViewComponent  implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.historyMgmt.updateHistoryList();
+    logger.info(JSON.stringify(this.history));
   }
 
   grabChapter() {
+    if (typeof this.content != "undefined") this.content.scrollToTop(0)
     if (this.workId != null && this.chapterId != null) {
       this.chapterPipe.get(Number(this.workId), Number(this.chapterId), 1).subscribe(chapter => {
         this.chapter = chapter
