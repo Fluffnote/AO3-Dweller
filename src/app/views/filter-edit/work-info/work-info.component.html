@@ -1,0 +1,29 @@
+<div class="mx-2">
+  <div class="mt-3"><ion-input color="primary" label="Any field" label-placement="floating" fill="outline" [value]="filter.query" (change)="updateVar($event, 'query')"></ion-input></div>
+  <div class="mt-3"><ion-input label="Title" label-placement="floating" fill="outline" [value]="filter.title" (change)="updateVar($event, 'title')"></ion-input></div>
+  <div class="mt-3"><ion-input label="Creator" label-placement="floating" fill="outline" [value]="filter.creators" (change)="updateVar($event, 'creators')"></ion-input></div>
+  <div class="mt-3"><ion-input label="Date" label-placement="floating" fill="outline" [value]="filter.revisedAt" (change)="updateVar($event, 'revisedAt')"></ion-input></div>
+  <div class="mt-3">
+    <h5>Completion Status</h5>
+    <ion-radio-group [value]="filter.complete" (ionChange)="updateVar($event, 'complete')">
+      <ion-radio value="" labelPlacement="end">All Works</ion-radio><br />
+      <ion-radio value="T" labelPlacement="end">Complete works only</ion-radio><br />
+      <ion-radio value="F" labelPlacement="end">Works in progress only</ion-radio>
+    </ion-radio-group>
+  </div>
+  <div class="mt-3">
+    <h5>Crossovers</h5>
+    <ion-radio-group [value]="filter.crossover" (ionChange)="updateVar($event, 'crossover')">
+      <ion-radio value="" labelPlacement="end">Include crossovers</ion-radio><br />
+      <ion-radio value="T" labelPlacement="end">Exclude crossovers</ion-radio><br />
+      <ion-radio value="F" labelPlacement="end">Only crossovers</ion-radio>
+    </ion-radio-group>
+  </div>
+  <div class="mt-3"> <!-- Change to typeahead select -->
+    <ion-select label="Language" interface="modal" label-placement="floating" fill="outline" [value]="filter.languageId" (ionChange)="updateVar($event, 'language')">
+      @for (language of languageMap; track language[0]) {
+        <ion-select-option [value]="language[0]">{{ language[1] }}</ion-select-option>
+      }
+    </ion-select>
+  </div>
+</div>

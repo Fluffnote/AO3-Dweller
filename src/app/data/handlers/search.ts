@@ -6,6 +6,7 @@ import {Work} from '../models/work';
 import {SearchParser} from '../parsers/search-parser';
 import {HttpResponse} from '@capacitor/core';
 import {logger} from './logger';
+import {Filter} from '../models/filters/filter';
 
 @Injectable({
   providedIn: 'root'
@@ -29,11 +30,22 @@ export class Search {
 
   searchText(query: string): Observable<boolean> {
     this._filter = new WorkFilter();
+    // @ts-ignore
     this._filter.query = query;
     this.filter.next(this._filter);
     this.page = 1;
     this._searchResults = [];
     return this.ao3.getSearchPage(this._filter, this.page).pipe(map(response => this.responseToUpdate(response)))
+  }
+
+  search(filter: WorkFilter): Observable<boolean> {
+    // logger.info(JSON.stringify(filter));
+    this._filter = filter;
+    this.filter.next(this._filter);
+    this.page = 1;
+    this._searchResults = [];
+    // logger.info(JSON.stringify(this._filter));
+    return this.ao3.getSearchPage(filter, this.page).pipe(map(response => this.responseToUpdate(response)))
   }
 
   searchNext(): Observable<boolean> {

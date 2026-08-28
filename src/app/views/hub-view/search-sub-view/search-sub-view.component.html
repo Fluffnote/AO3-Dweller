@@ -4,15 +4,18 @@
 <ion-content [scrollEvents]="true" HideOverlay (hide)="hideHeader = $event">
   <ui-hide-header [hide]="hideHeader">
     <ion-toolbar color="primary">
-      <ion-searchbar #SearchBar class="p-0 shadow-none mx-2" color="primary" (ionChange)="onSearchChange($event)"></ion-searchbar>
-      <!--    <ion-buttons slot="primary">-->
-      <!--      <ion-button>-->
-      <!--        <ion-icon slot="icon-only" name="filter"></ion-icon>-->
-      <!--      </ion-button>-->
-      <!--    </ion-buttons>-->
+      <ion-searchbar #SearchBar class="p-0 shadow-none mx-2" color="primary" [value]="filter?.query" (ionChange)="onSearchChange($event)"></ion-searchbar>
+          <ion-buttons slot="primary">
+            <ion-button (click)="openEditor()">
+              <ion-icon slot="icon-only" name="filter" [style]="filterStyle()"></ion-icon>
+            </ion-button>
+          </ion-buttons>
     </ion-toolbar>
   </ui-hide-header>
-  @if (loading) {
+  @if (filter == null) {
+    <views-home-sub-view></views-home-sub-view>
+  }
+  @else if (loading) {
     <div class="position-relative h-100 w-100">
       <div class="position-absolute top-50 start-50 translate-middle"><ion-spinner></ion-spinner></div>
     </div>
@@ -41,8 +44,5 @@
         </div>
       }
     }
-  }
-  @else {
-    <views-home-sub-view></views-home-sub-view>
   }
 </ion-content>

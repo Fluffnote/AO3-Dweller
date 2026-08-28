@@ -1,4 +1,4 @@
-import {ContentRating, ContentWarning, RPO, Status} from './ao3-symbols.enum';
+import {ContentRating, ContentWarning, RPO, Status} from './support/ao3-symbols.enum';
 import {Chapter} from './chapter';
 
 export class Work {

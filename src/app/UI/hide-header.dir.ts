@@ -10,7 +10,7 @@ export class HideOverlayDirective {
   @Output("hide") hide = new EventEmitter<boolean>();
 
   private lastY = 0;
-  private lag = 100;
+  private lag = 60;
   private _hide = false;
 
   constructor() { }

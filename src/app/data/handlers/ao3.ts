@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Http} from './http';
 import {WorkFilter} from '../models/filters/work-filter';
-import {CapacitorHttp, HttpResponse} from '@capacitor/core';
+import {CapacitorHttp, HttpParams, HttpResponse} from '@capacitor/core';
 import {logger} from './logger';
+import {Filter, ParamMap} from '../models/filters/filter';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AO3 {
 
-  constructor() { }
+  constructor(protected http: HttpClient) { }
 
   private _baseUrl = 'https://archiveofourown.org/';
 
@@ -18,8 +20,10 @@ export class AO3 {
 
   // Actual API calls go here
   getSearchPage(filter: WorkFilter, page: number = 1): Observable<any> {
-    const url = this._baseUrl + 'works/search';
-    let filterParams = filter.paramMap();
+    let temp = new WorkFilter();
+    temp.copyFrom(filter); // Need to copy since there is a weird disconnect
+    const url = this._baseUrl + temp.searchBase;
+    let filterParams = temp.paramMap();
     filterParams.page = page.toString();
     const options = {url, params: filterParams}
     return Http.instance.get(options);
@@ -38,6 +42,17 @@ export class AO3 {
     else url = this._baseUrl + 'works/' + workId;
     const params = {"view_adult": "true"}
     const options = {url, params}
+    return Http.instance.get(options);
+  }
+
+  getAutocomplete(section: string, query: string): Observable<any> {
+    const url = this._baseUrl + 'autocomplete/' + section//+'?term:' + query;
+    const params = {"term": query}
+    const options = {url, params, headers: {'Accept': 'application/json'}}
+    logger.info(JSON.stringify(options));
+    // return this.http.get(url)
+    // return this.http.request('GET', url + '?' + 'term='+query, {headers: {'Accept': 'application/json'}});
+    // @ts-ignore
     return Http.instance.get(options);
   }
 

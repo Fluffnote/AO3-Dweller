@@ -1,0 +1,22 @@
+<div class="mx-2">
+  <div class="mt-3">
+    <ion-select label="Sort By" interface="modal" [value]="filter.sortColumn" label-placement="floating" fill="outline">
+      <ion-select-option value="_score">Best Match</ion-select-option>
+      <ion-select-option value="authors_to_sort_on">Author</ion-select-option>
+      <ion-select-option value="title_to_sort_on">Title</ion-select-option>
+      <ion-select-option value="created_at">Date Posted</ion-select-option>
+      <ion-select-option value="revised_at">Date Updated</ion-select-option>
+      <ion-select-option value="word_count">Word Count</ion-select-option>
+      <ion-select-option value="hitsCount">Hits</ion-select-option>
+      <ion-select-option value="kudos_count">Kudos</ion-select-option>
+      <ion-select-option value="comments_count">Comments</ion-select-option>
+      <ion-select-option value="bookmarks_count">Bookmarks</ion-select-option>
+    </ion-select>
+  </div>
+  <div class="mt-3">
+    <ion-select label="Sort Direction" interface="modal" [value]="filter.sortDirection" label-placement="floating" fill="outline">
+      <ion-select-option value="asc">Ascending</ion-select-option>
+      <ion-select-option value="desc">Descending</ion-select-option>
+    </ion-select>
+  </div>
+</div>

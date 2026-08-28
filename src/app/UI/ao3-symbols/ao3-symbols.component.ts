@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ContentRating, ContentWarning, RPO, Status} from '../../data/models/ao3-symbols.enum';
+import {ContentRating, ContentWarning, RPO, Status} from '../../data/models/support/ao3-symbols.enum';
 
 @Component({
   selector: 'ui-ao3-symbols',

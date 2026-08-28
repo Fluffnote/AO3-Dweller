@@ -1,0 +1,58 @@
+<ion-header #Header>
+  <ui-status-border [hide]="hideHeader"></ui-status-border>
+</ion-header>
+<ion-content [scrollEvents]="true" HideOverlay (hide)="hideHeader = $event">
+  <ui-hide-header [hide]="hideHeader">
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ui-back-button></ui-back-button>
+      </ion-buttons>
+      <ion-buttons slot="secondary">
+        @if (temp) {
+          <ion-button (click)="search()"><ion-icon slot="icon-only" name="search-outline"></ion-icon></ion-button>
+        } @else {
+          <ion-button (click)="testOut()"><ion-icon slot="icon-only" name="save-outline"></ion-icon></ion-button>
+        }
+      </ion-buttons>
+      <ion-title>{{ temp?"Advanced Filter":filter.name }}</ion-title>
+    </ion-toolbar>
+  </ui-hide-header>
+  <div class="my-3">
+    @if (!temp) {
+      <div class="mx-2"><ion-input label="Filter Name" label-placement="floating" fill="outline" value="New Filter"></ion-input></div>
+    }
+    <div class="mt-3 mx-2">
+      <ion-select label="Filter Type" interface="action-sheet" value="works" label-placement="floating" fill="outline" [disabled]="true">
+        <ion-select-option value="works">Works</ion-select-option>
+        <ion-select-option value="bookmarks">Bookmarks</ion-select-option>
+        <ion-select-option value="tags">Tags</ion-select-option>
+        <ion-select-option value="people">People</ion-select-option>
+      </ion-select>
+    </div>
+    @if (filter.settings != null && filter.settings instanceof WorkFilter) {
+      <div class="mt-2">
+        <ion-segment color="light" value="work-info">
+          <ion-segment-button value="work-info" content-id="work-info">
+            <ion-label>Info</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="work-tags" content-id="work-tags">
+            <ion-label>Tags</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="work-stats" content-id="work-stats">
+            <ion-label>Stats</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="work-sort" content-id="work-sort">
+            <ion-label>Sort</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <ion-segment-view>
+          <ion-segment-content id="work-info"><filter-edit-work-info [filter]="filter.settings"></filter-edit-work-info></ion-segment-content>
+          <ion-segment-content id="work-tags"><filter-edit-work-tags [filter]="filter.settings"></filter-edit-work-tags></ion-segment-content>
+          <ion-segment-content id="work-stats"><filter-edit-work-stats [filter]="filter.settings"></filter-edit-work-stats></ion-segment-content>
+          <ion-segment-content id="work-sort"><filter-edit-search-settings [filter]="filter.settings"></filter-edit-search-settings></ion-segment-content>
+        </ion-segment-view>
+      </div>
+    }
+  </div>
+  <div class="bottom-bumper pt-5"></div>
+</ion-content>

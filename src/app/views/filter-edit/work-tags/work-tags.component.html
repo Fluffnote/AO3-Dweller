@@ -1,0 +1,60 @@
+<div class="mx-2" xmlns="">
+  <div class="mt-3">
+    <ion-select label="Rating" interface="modal" [value]="filter.ratingIds" label-placement="floating" fill="outline" (ionChange)="updateVar($event, 'rating')">
+      <ion-select-option value="">Any</ion-select-option>
+      <ion-select-option value="9">Not Rated</ion-select-option>
+      <ion-select-option value="10">General Audiences</ion-select-option>
+      <ion-select-option value="11">Teen And Up Audiences</ion-select-option>
+      <ion-select-option value="12">Mature</ion-select-option>
+      <ion-select-option value="13">Explicit</ion-select-option>
+    </ion-select>
+  </div>
+  <div class="mt-3">
+    <ion-select label="Warnings" interface="modal" [value]="filter.archiveWarningIds" label-placement="floating" fill="outline" [multiple]="true" (ionChange)="updateVar($event, 'warnings')">
+      <ion-select-option value="14">Creator Chose Not To Use Archive Warnings</ion-select-option>
+      <ion-select-option value="17">Graphic Depictions Of Violence</ion-select-option>
+      <ion-select-option value="18">Major Character Death</ion-select-option>
+      <ion-select-option value="16">No Archive Warnings Apply</ion-select-option>
+      <ion-select-option value="19">Rape/Non-Con</ion-select-option>
+      <ion-select-option value="20">Underage Sex</ion-select-option>
+    </ion-select>
+  </div>
+  <div class="mt-3">
+    <ion-select label="Categories" interface="modal" [value]="filter.categoryIds" label-placement="floating" fill="outline" [multiple]="true" (ionChange)="updateVar($event, 'categories')">
+      <ion-select-option value="116">F/F</ion-select-option>
+      <ion-select-option value="22">F/M</ion-select-option>
+      <ion-select-option value="21">Gen</ion-select-option>
+      <ion-select-option value="23">M/M</ion-select-option>
+      <ion-select-option value="2246">Multi</ion-select-option>
+      <ion-select-option value="24">Other</ion-select-option>
+    </ion-select>
+  </div>
+  <div class="mt-3">
+    <ion-accordion-group>
+      <ion-accordion value="fandoms">
+        <ion-item slot="header">
+          <ion-label>Fandoms</ion-label>
+        </ion-item>
+        <div slot="content"><filter-edit-tag-config tagType="fandom" label="Fandoms" [tagset]="filter.fandomNames"></filter-edit-tag-config></div>
+      </ion-accordion>
+      <ion-accordion value="characters">
+        <ion-item slot="header">
+          <ion-label>Characters</ion-label>
+        </ion-item>
+        <div slot="content"><filter-edit-tag-config tagType="character" label="Characters" [tagset]="filter.characterNames"></filter-edit-tag-config></div>
+      </ion-accordion>
+      <ion-accordion value="relationships">
+        <ion-item slot="header">
+          <ion-label>Relationships</ion-label>
+        </ion-item>
+        <div slot="content"><filter-edit-tag-config tagType="relationship" label="Relationships" [tagset]="filter.relationshipNames"></filter-edit-tag-config></div>
+      </ion-accordion>
+      <ion-accordion value="additional-tags">
+        <ion-item slot="header">
+          <ion-label>Additional Tags</ion-label>
+        </ion-item>
+        <div slot="content"><filter-edit-tag-config tagType="freeform" label="Additional Tags" [tagset]="filter.freeformNames"></filter-edit-tag-config></div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </div>
+</div>

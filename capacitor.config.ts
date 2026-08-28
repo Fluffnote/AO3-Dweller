@@ -3,8 +3,7 @@ import localConfig from './localSettings';
 
 let config: CapacitorConfig = localConfig || {}
 
-config.appId = 'com.fluffnote.ao3dweller';
-config.appName = 'AO3 Dweller';
+
 config.webDir = 'dist/AO3-Dweller/browser';
 config.plugins = {
   StatusBar: {

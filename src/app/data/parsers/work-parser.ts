@@ -1,7 +1,7 @@
 import {Work} from '../models/work';
 import {Parser, ParserBase} from './parser';
 import {Chapter} from '../models/chapter';
-import {ContentRating, ContentWarning, RPO, Status} from '../models/ao3-symbols.enum';
+import {ContentRating, ContentWarning, RPO, Status} from '../models/support/ao3-symbols.enum';
 
 export class WorkParser extends ParserBase implements Parser {
   version = 1;

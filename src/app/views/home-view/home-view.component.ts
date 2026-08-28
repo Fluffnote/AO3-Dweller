@@ -4,8 +4,8 @@ import {Browser} from '@capacitor/browser';
 
 @Component({
   selector: 'views-home-sub-view',
-  templateUrl: './home-sub-view.component.html',
-  styleUrls: ['./home-sub-view.component.less'],
+  templateUrl: './home-view.component.html',
+  styleUrls: ['./home-view.component.less'],
   imports: [
     IonButton,
     IonIcon,
@@ -13,7 +13,7 @@ import {Browser} from '@capacitor/browser';
     IonLabel
   ]
 })
-export class HomeSubViewComponent  implements OnInit {
+export class HomeViewComponent implements OnInit {
 
   constructor() { }
 

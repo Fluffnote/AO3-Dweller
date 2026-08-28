@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {IonContent, IonHeader, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from '@ionic/angular/standalone';
 import {logger} from '../../../data/handlers/logger';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'views-filters-sub-view',
@@ -10,15 +11,22 @@ import {logger} from '../../../data/handlers/logger';
     IonContent,
     IonHeader,
     IonTitle,
-    IonToolbar
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon
   ]
 })
 export class FiltersSubViewComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   out = ""
 
   ngOnInit() { }
+
+  openEditor(filterId: number) {
+    this.router.navigate(['/filter/-1']);
+  }
 
 }

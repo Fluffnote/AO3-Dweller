@@ -132,8 +132,8 @@ export class ChapterViewComponent  implements OnInit, OnDestroy {
   }
 
   hideChange(e: boolean) {
-    if (e) StatusBar.hide();
-    else StatusBar.show();
+    // if (e) StatusBar.hide();
+    // else StatusBar.show();
     this.hideHeader = e;
   }
 

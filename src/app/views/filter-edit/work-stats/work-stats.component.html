@@ -1,0 +1,63 @@
+<div class="mx-4">
+  <div class="mt-3">
+    <div class="d-flex">
+      <h5 class="m-0">Words</h5>
+      <h5 class="ms-auto m-0">{{ words.label }}</h5>
+    </div>
+    <div class="ms-2"><ion-range [dualKnobs]="true"
+                                 [snaps]="true"
+                                 [min]="0" [max]="16"
+                                 [value]="words.range"
+                                 [pin]="true" [pinFormatter]="pinFormatter"
+                                 (ionChange)="rangeChange($event, 'words')"></ion-range></div>
+    <div class="mt-2"><ion-checkbox labelPlacement="end" [value]="filter.singleChapter" (ionChange)="singleChapterChange()">Single Chapter Only</ion-checkbox></div>
+  </div>
+  <div class="mt-4">
+    <div class="d-flex">
+      <h5 class="m-0">Hits</h5>
+      <h5 class="ms-auto m-0">{{ hits.label }}</h5>
+    </div>
+    <div class="ms-2"><ion-range [dualKnobs]="true"
+                                 [snaps]="true"
+                                 [min]="0" [max]="16"
+                                 [value]="hits.range"
+                                 [pin]="true" [pinFormatter]="pinFormatter"
+                                 (ionChange)="rangeChange($event, 'hits')"></ion-range></div>
+  </div>
+  <div class="mt-3">
+    <div class="d-flex">
+      <h5 class="m-0">Kudos</h5>
+      <h5 class="ms-auto m-0">{{ kudos.label }}</h5>
+    </div>
+    <div class="ms-2"><ion-range [dualKnobs]="true"
+                                 [snaps]="true"
+                                 [min]="0" [max]="16"
+                                 [value]="kudos.range"
+                                 [pin]="true" [pinFormatter]="pinFormatter"
+                                 (ionChange)="rangeChange($event, 'kudos')"></ion-range></div>
+  </div>
+  <div class="mt-3">
+    <div class="d-flex">
+      <h5 class="m-0">Comments</h5>
+      <h5 class="ms-auto m-0">{{ comments.label }}</h5>
+    </div>
+    <div class="ms-2"><ion-range [dualKnobs]="true"
+                                 [snaps]="true"
+                                 [min]="0" [max]="16"
+                                 [value]="comments.range"
+                                 [pin]="true" [pinFormatter]="pinFormatter"
+                                 (ionChange)="rangeChange($event, 'comments')"></ion-range></div>
+  </div>
+  <div class="mt-3">
+    <div class="d-flex">
+      <h5 class="m-0">Bookmarks</h5>
+      <h5 class="ms-auto m-0">{{ bookmarks.label }}</h5>
+    </div>
+    <div class="ms-2"><ion-range [dualKnobs]="true"
+                                 [snaps]="true"
+                                 [min]="0" [max]="16"
+                                 [value]="bookmarks.range"
+                                 [pin]="true" [pinFormatter]="pinFormatter"
+                                 (ionChange)="rangeChange($event, 'bookmarks')"></ion-range></div>
+  </div>
+</div>

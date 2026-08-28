@@ -1,0 +1,18 @@
+<div>
+  <ion-segment color="light" value="must-have">
+    <ion-segment-button value="must-have" [contentId]="tagType+'-must-have'">
+      <ion-label>Must Have</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="can-have" [contentId]="tagType+'-can-have'">
+      <ion-label>Can Have</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="exclude" [contentId]="tagType+'-exclude'">
+      <ion-label>Exclude</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment-view>
+    <ion-segment-content [id]="tagType+'-must-have'"><filter-edit-tag-search [id]="tagType+'-must-have'" [section]="tagType" [label]="label" [tags]="tagset.mustHaveTags"></filter-edit-tag-search></ion-segment-content>
+    <ion-segment-content [id]="tagType+'-can-have'"><filter-edit-tag-search [id]="tagType+'-can-have'" [section]="tagType" [label]="label" [tags]="tagset.canHaveTags"></filter-edit-tag-search></ion-segment-content>
+    <ion-segment-content [id]="tagType+'-exclude'"><filter-edit-tag-search [id]="tagType+'-exclude'" [section]="tagType" [label]="label" [tags]="tagset.excludeTags"></filter-edit-tag-search></ion-segment-content>
+  </ion-segment-view>
+</div>
